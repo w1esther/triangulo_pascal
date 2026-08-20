@@ -50,7 +50,7 @@ class SomaDiagonalAbaixoPascal(Scene):
 
         eq_text_1 = MathTex(
             f"\\binom{{1}}{{0}} + \\binom{{2}}{{1}} + \\binom{{3}}{{2}} = "
-            f"{sum_str_1} = {total_val_1} = \\binom{{{res_n_1}}}{{{{ {res_k_1} }}}}",
+            f"{sum_str_1} = {total_val_1} = \\binom{{res_n_1}}{{res_k_1}}",
             font_size=22
         )
         eq_text_1.to_edge(DOWN, buff=0.4)
