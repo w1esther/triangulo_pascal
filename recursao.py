@@ -30,15 +30,21 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
 
         # 2. Construção do Triângulo Numérico na Esquerda (Até a linha 7)
         numeros_triangulo = {}
-        for n in range(max_row + 1):
-        # n representa cada linha do triângulo
-            row_group = VGroup()
-            # cria um grupo para cada linha
-            for k in range(n + 1):
-            #percorre cada elemento dentro de uma mesma linha
-                val = math.comb(n, k)
 
-                #calcula o binomial de n, k. Ou seja, a combinação de n elementos tomados k a k. n se refere a qual linha do triângulo estamos e k a cada um dos elementos. por isso vai calcular todos os binomiais respectivos à linha de referência
+        # relação de stifel
+
+        def binomial(n, k):
+            if k == 0 or k == n:
+                return 1
+            return binomial(n-1, k-1) + binomial(n-1, k)
+        
+        for n in range(max_row + 1):
+
+            row_group = VGroup()
+         
+            for k in range(n + 1):
+        
+                val = binomial(n, k)
 
                 # Espaçamento amplo (vertical: 0.75, horizontal: 0.6)
                 x = -7.5 + k * 1.0
@@ -48,8 +54,6 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
                 cell.move_to(np.array([x, y, 0]))
                 numeros_triangulo[(n, k)] = cell
                 row_group.add(cell)
-
-                #Obs linha 44 a 50
             
             self.play(FadeIn(row_group), run_time=1)
 
@@ -83,3 +87,25 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
 
             # Faz aparecer as cópias numéricas na origem
             self.play(FadeIn(row_copies, run_time=0.25))
+            
+            # Deslocamento para a direita
+            animations_move = []
+            for i, k in enumerate(range(n + 1)):
+                x_r = 0.5 + k * 0.85
+                y_r = 2.5 - n * 0.75
+                animations_move.append(row_copies[i].animate.move_to(np.array([x_r, y_r, 0])))
+            
+            self.play(*animations_move, run_time=1)
+
+            self.wait(2)
+
+            # Transição para os coeficientes binomiais
+            animations_transform = []
+            for i in range(len(row_copies)):
+                animations_transform.append(ReplacementTransform(row_copies[i], row_binomials[i]))
+            
+            self.play(*animations_transform, run_time=0.5)
+            
+            self.wait(2)
+
+        self.wait(2)

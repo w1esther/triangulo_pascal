@@ -51,7 +51,7 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
 
                 #Obs linha 44 a 50
             
-            self.play(FadeIn(row_group, shift=DOWN * 0.05), run_time=1)
+            self.play(FadeIn(row_group), run_time=1)
 
         self.wait(2)
 
@@ -71,7 +71,7 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
                 
                 # Cópia que nasce na esquerda (mantendo fonte enorme)
                 copy_cell = MathTex(val_str, font_size=56, color=YELLOW)
-                copy_cell.move_to(dest_pos)
+                copy_cell.move_to(orig_pos)
                 row_copies.add(copy_cell)
                 
                 # Binomial no destino (fonte enorme: 30)
@@ -92,6 +92,7 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
                 animations_move.append(row_copies[i].animate.move_to(np.array([x_r, y_r, 0])))
             
             self.play(*animations_move, run_time=1)
+
 
             self.wait(2)
 
