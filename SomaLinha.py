@@ -28,7 +28,7 @@ class SomaLinhaPascal(Scene):
             
             self.play(FadeIn(row_cells, shift=DOWN * 1), run_time=2)
 
-        self.wait(0.8)
+        self.wait(3)
 
         # 3. Exemplo 1: Linha n = 3
         target_row1 = 3
@@ -49,21 +49,33 @@ class SomaLinhaPascal(Scene):
             font_size=32
         )
         eq_text1.to_edge(DOWN, buff=2)
+        
+        mais = VGroup()
+
+        for k in range(target_row1):
+            plus = MathTex("+", font_size=32)
+            plus.next_to(cell_dict[(target_row1, k)], RIGHT, buff=0.125)
+            mais.add(plus)
 
         self.play(
             Create(row_boxes1),
-            *[cell_dict[(target_row1, k)].animate.set_color(YELLOW) for k in range(target_row1 + 1)],
-            Transform(title, eq_text1),
-            run_time=1
+            *[cell_dict[(target_row1, k)].animate.set_color(YELLOW) for k in range(target_row1 + 1)],*[FadeIn(mais[k])
+            for k in range(target_row1)],
+            run_time=2
         )
+        self.wait(1)
+        self.play(Transform(title, eq_text1), run_time = 2)
         self.wait(1.5)
 
         # Limpeza para o segundo exemplo
         self.play(
             FadeOut(row_boxes1),
-            *[cell_dict[(target_row1, k)].animate.set_color(WHITE) for k in range(target_row1 + 1)],
+            *[cell_dict[(target_row1, k)].animate.set_color(WHITE) for k in range(target_row1 + 1)],*[FadeOut(mais[k])
+            for k in range(target_row1)],
             run_time=0.5
         )
+
+        self.wait(2)
 
         # 4. Exemplo 2: Linha n = 4
         target_row2 = 4
@@ -75,6 +87,13 @@ class SomaLinhaPascal(Scene):
             box = SurroundingRectangle(cell, color=YELLOW, buff=0.08)
             row_boxes2.add(box)
             sum_terms2.append(str(math.comb(target_row2, k)))
+
+        mais2 = VGroup()
+
+        for k in range(target_row2):
+            plus2 = MathTex("+", font_size=32)
+            plus2.next_to(cell_dict[(target_row2, k)], RIGHT, buff=0.125)
+            mais2.add(plus2)
 
         sum_str2 = " + ".join(sum_terms2)
         total_val2 = 2 ** target_row2
@@ -88,10 +107,11 @@ class SomaLinhaPascal(Scene):
         self.play(
             Create(row_boxes2),
             *[cell_dict[(target_row2, k)].animate.set_color(YELLOW) for k in range(target_row2 + 1)],
-            Transform(title, eq_text2),
+            Transform(title, eq_text2),*[FadeIn(mais2[k])
+            for k in range(target_row2)],
             run_time=1
         )
-        self.wait(1.5)
+        self.wait(3.5)
 
         # 5. Encerramento
         final_text = MathTex(r"\text{A soma dos elementos de uma linha qualquer } n \text{ é sempre igual a } 2^n.", font_size=32)
@@ -100,7 +120,8 @@ class SomaLinhaPascal(Scene):
         self.play(
             FadeOut(row_boxes2),
             *[cell_dict[(target_row2, k)].animate.set_color(WHITE) for k in range(target_row2 + 1)],
-            Transform(title, final_text),
+            Transform(title, final_text),*[FadeOut(mais2[k])
+            for k in range(target_row2)],
             run_time=1
         )
         self.wait(4)
