@@ -93,7 +93,6 @@ class TrianguloNumericoEBinomial(MovingCameraScene):
             
             self.play(*animations_move, run_time=1)
 
-
             self.wait(2)
 
             # Transição para os coeficientes binomiais
